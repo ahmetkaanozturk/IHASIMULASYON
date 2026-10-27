@@ -1,5 +1,7 @@
 # IHASIMULASYON — TEKNOFEST 2026 Sabit Kanat İHA 3D Simülasyon Ortamı
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Bu depo, **TEKNOFEST 2026 TÜBİTAK Sabit Kanat İHA Yarışması (Şartname V6)** kapsamında geliştirilen otonom hedefleme, seyrüsefer ve balistik faydalı yük bırakma algoritmalarının **0 donanım riskiyle** test edildiği 3D fizik simülasyon ortamıdır.
 
 ---
@@ -50,6 +52,11 @@ Klasör içindeki hazır `.bat` dosyalarına çift tıklayarak çalıştırabili
 
 ---
 
-## 📖 Detaylı Kılavuz
-Kendi CAD tasarımınızı simülasyona aktarma adımları, kütle/atalet tanımları ve aerodinamik katsayılar için [REHBER.md](REHBER.md) ve [SIMULATION_BLUEPRINT.md](SIMULATION_BLUEPRINT.md) dosyalarını inceleyebilirsiniz.
+## 📖 Kılavuz & Belgeler
+- **Detaylı Entegrasyon & CAD Tasarımı Ekleme:** [REHBER.md](REHBER.md)
+- **Simülasyon Mimari Sözleşmesi:** [SIMULATION_BLUEPRINT.md](SIMULATION_BLUEPRINT.md)
 
+---
+
+## 📄 Lisans
+Bu proje [MIT Lisansı](LICENSE) altında açık kaynak olarak lisanslanmıştır.
