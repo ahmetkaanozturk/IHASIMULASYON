@@ -52,3 +52,4 @@ Klasör içindeki hazır `.bat` dosyalarına çift tıklayarak çalıştırabili
 
 ## 📖 Detaylı Kılavuz
 Kendi CAD tasarımınızı simülasyona aktarma adımları, kütle/atalet tanımları ve aerodinamik katsayılar için [REHBER.md](REHBER.md) ve [SIMULATION_BLUEPRINT.md](SIMULATION_BLUEPRINT.md) dosyalarını inceleyebilirsiniz.
+

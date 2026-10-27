@@ -64,9 +64,8 @@ Sistem üç ana katmandan oluşur ve donanım riski olmadan tam kapalı çevrim 
 - **Yazılımlar:** Gazebo Harmonic, ArduPilot SITL, Python 3.10+
 
 ### 3.2 Tek Seferlik Kurulum
-Ubuntu (WSL) terminalinde:
+Ubuntu (WSL) terminalinde proje dizinine gidip:
 ```bash
-cd /mnt/c/Users/akaan/Desktop/IHASIMULASYON
 chmod +x scripts/*.sh
 ./scripts/setup_ardupilot.sh
 ```
@@ -88,8 +87,7 @@ Alternatif olarak terminal üzerinden:
 # Terminal 3
 ./scripts/run_camera_bridge.sh
 
-# Terminal 4
-cd /mnt/c/Users/akaan/Desktop/IHAILOS
+# Terminal 4 (IHAILOS dizininde)
 python main.py --mavlink udp:127.0.0.1:14550 --camera http://127.0.0.1:8554/stream.mjpg --model yolov8n.pt
 ```
 
@@ -166,3 +164,4 @@ IHASIMULASYON/
 └── worlds/
     └── teknofest_2026.world   <- Koordinatlı resmi yarışma dünyası
 ```
+
