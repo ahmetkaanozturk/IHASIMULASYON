@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <model name="target_blue_hexagon">
+    <static>true</static>
+    <pose>0 0 0 0 0 0</pose>
+
+    <!--
+      Düzgün altıgen: kenar uzunluğu = 2.0 m
+      Çevrel çember yarıçapı R = kenar = 2.0 m
+      Köşe-köşe = 4.0 m, düz-düz = 2*sqrt(3) ≈ 3.464 m
+      Mesh: meshes/hexagon.stl (5 cm kalınlık prizma)
+    -->
+    <link name="target">
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>20.0</mass>
+        <inertia>
+          <ixx>20.0</ixx>
+          <iyy>20.0</iyy>
+          <izz>40.0</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+      <visual name="target_visual">
+        <geometry>
+          <mesh>
+            <uri>model://target_blue_hexagon/meshes/hexagon.stl</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.00 0.15 0.75 1</ambient>
+          <diffuse>0.00 0.25 0.95 1</diffuse>
+          <specular>0.20 0.20 0.30 1</specular>
+          <emissive>0.00 0.02 0.08 1</emissive>
+        </material>
+      </visual>
+      <collision name="target_collision">
+        <geometry>
+          <mesh>
+            <uri>model://target_blue_hexagon/meshes/hexagon.stl</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

@@ -1,0 +1,4 @@
+*.log
+scripts/env.sh
+scripts/sitl_params/
+*.tmp

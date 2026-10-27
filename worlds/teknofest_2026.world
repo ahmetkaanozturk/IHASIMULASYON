@@ -1,0 +1,320 @@
+<?xml version="1.0" ?>
+<!--
+  TEKNOFEST 2026 Sabit Kanat İHA - Gazebo Harmonic / Garden dünyası
+  Koordinat sistemi (ENU, Z yukarı):
+    X : pist ve uçuş yönü
+    Y : yanal
+  Düzen:
+    - Pist: X = [-20, 130] m, genişlik 15 m (Y = ±7.5)
+    - Başlangıç/bitiş çizgisi: X = 0
+    - Direk 1: (200,  75, 0)   Direk 2: (200, -75, 0)
+      → İki direk arası net mesafe = 150 m (∞ manevrası)
+    - Tarama / hedef alanı: Direk hattının ötesi (X > 250 m)
+-->
+<sdf version="1.9">
+  <world name="teknofest_2026">
+
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact"/>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/>
+    <plugin filename="gz-sim-navsat-system" name="gz::sim::systems::NavSat"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <scene>
+      <ambient>0.55 0.55 0.55 1</ambient>
+      <background>0.55 0.70 0.90 1</background>
+      <shadows>true</shadows>
+    </scene>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 50 0 0 0</pose>
+      <diffuse>0.95 0.95 0.90 1</diffuse>
+      <specular>0.40 0.40 0.35 1</specular>
+      <attenuation>
+        <range>2000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.35 0.25 -0.90</direction>
+    </light>
+
+    <!-- Geniş çimen / toprak zemin -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>2000 2000</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>2000 2000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.20 0.42 0.18 1</ambient>
+            <diffuse>0.28 0.55 0.22 1</diffuse>
+            <specular>0.05 0.05 0.05 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ============================================================
+         PİST (asfalt şerit) — 150 m uzunluk x 15 m genişlik
+         ============================================================ -->
+    <model name="runway">
+      <static>true</static>
+      <pose>55 0 0.01 0 0 0</pose>
+      <link name="link">
+        <visual name="asphalt">
+          <geometry>
+            <box>
+              <size>150 15 0.02</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.18 0.18 0.20 1</ambient>
+            <diffuse>0.25 0.25 0.28 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="asphalt_collision">
+          <geometry>
+            <box>
+              <size>150 15 0.02</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+    <!-- Pist merkez çizgisi (kesikli görünüm için ince beyaz şerit) -->
+    <model name="runway_centerline">
+      <static>true</static>
+      <pose>55 0 0.025 0 0 0</pose>
+      <link name="link">
+        <visual name="line">
+          <geometry>
+            <box>
+              <size>150 0.30 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.90 0.90 0.90 1</ambient>
+            <diffuse>1.00 1.00 1.00 1</diffuse>
+            <specular>0.20 0.20 0.20 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Başlangıç / Bitiş çizgisi (X = 0) -->
+    <model name="start_finish_line">
+      <static>true</static>
+      <pose>0 0 0.03 0 0 0</pose>
+      <link name="link">
+        <visual name="line">
+          <geometry>
+            <box>
+              <size>0.50 16.0 0.02</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.95 0.95 0.95 1</ambient>
+            <diffuse>1.00 1.00 1.00 1</diffuse>
+            <specular>0.30 0.30 0.30 1</specular>
+            <emissive>0.15 0.15 0.15 1</emissive>
+          </material>
+        </visual>
+        <collision name="line_collision">
+          <geometry>
+            <box>
+              <size>0.50 16.0 0.02</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+    <!-- Pist kenar şeritleri -->
+    <model name="runway_edge_left">
+      <static>true</static>
+      <pose>55 7.4 0.025 0 0 0</pose>
+      <link name="link">
+        <visual name="edge">
+          <geometry>
+            <box>
+              <size>150 0.20 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.90 0.90 0.90 1</ambient>
+            <diffuse>1.00 1.00 1.00 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="runway_edge_right">
+      <static>true</static>
+      <pose>55 -7.4 0.025 0 0 0</pose>
+      <link name="link">
+        <visual name="edge">
+          <geometry>
+            <box>
+              <size>150 0.20 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.90 0.90 0.90 1</ambient>
+            <diffuse>1.00 1.00 1.00 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ============================================================
+         DÖNÜŞ DİREKLERİ — net mesafe 150 m (∞ / 8 manevrası)
+         Direk 1: (200, +75)   Direk 2: (200, -75)
+         ============================================================ -->
+    <include>
+      <uri>model://pole</uri>
+      <name>pole_1</name>
+      <pose>200 75 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://pole</uri>
+      <name>pole_2</name>
+      <pose>200 -75 0 0 0 0</pose>
+    </include>
+
+    <!-- Direk hattı referans işaretleri (görsel yardımcı, yere düz) -->
+    <model name="pole_axis_marker">
+      <static>true</static>
+      <pose>200 0 0.02 0 0 0</pose>
+      <link name="link">
+        <visual name="axis">
+          <geometry>
+            <box>
+              <size>0.20 150.0 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.70 0.55 0.10 1</ambient>
+            <diffuse>0.85 0.70 0.15 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ============================================================
+         TARAMA ALANI — Direk 2 hattının ardı (X > 250 m)
+         Sabit kanat hedefleri + döner kanat negatif test hedefleri
+         ============================================================ -->
+
+    <!-- Hedef 1: 4x4 m mavi kare (kırmızı yük) -->
+    <include>
+      <uri>model://target_blue_square_4x4</uri>
+      <name>target_blue_square_4x4</name>
+      <pose>280 25 0 0 0 0</pose>
+    </include>
+
+    <!-- Hedef 2: 2x2 m kırmızı kare (mavi yük) -->
+    <include>
+      <uri>model://target_red_square_2x2</uri>
+      <name>target_red_square_2x2</name>
+      <pose>305 -20 0 0 0 0</pose>
+    </include>
+
+    <!-- Negatif test: mavi düzgün altıgen (kenar 2 m) — döner kanat -->
+    <include>
+      <uri>model://target_blue_hexagon</uri>
+      <name>target_blue_hexagon</name>
+      <pose>320 45 0 0 0 0</pose>
+    </include>
+
+    <!-- Negatif test: kırmızı eşkenar üçgen (kenar 1 m) — döner kanat -->
+    <include>
+      <uri>model://target_red_triangle</uri>
+      <name>target_red_triangle</name>
+      <pose>295 -50 0 0 0 0</pose>
+    </include>
+
+    <!-- Tarama alanı sınır çerçevesi (ince sarı çizgi, görsel) -->
+    <model name="scan_area_border">
+      <static>true</static>
+      <pose>300 0 0.015 0 0 0</pose>
+      <link name="link">
+        <visual name="border_n">
+          <pose>0 70 0 0 0 0</pose>
+          <geometry>
+            <box><size>120 0.15 0.01</size></box>
+          </geometry>
+          <material>
+            <ambient>0.80 0.70 0.05 1</ambient>
+            <diffuse>0.95 0.85 0.10 1</diffuse>
+          </material>
+        </visual>
+        <visual name="border_s">
+          <pose>0 -70 0 0 0 0</pose>
+          <geometry>
+            <box><size>120 0.15 0.01</size></box>
+          </geometry>
+          <material>
+            <ambient>0.80 0.70 0.05 1</ambient>
+            <diffuse>0.95 0.85 0.10 1</diffuse>
+          </material>
+        </visual>
+        <visual name="border_w">
+          <pose>-60 0 0 0 0 0</pose>
+          <geometry>
+            <box><size>0.15 140 0.01</size></box>
+          </geometry>
+          <material>
+            <ambient>0.80 0.70 0.05 1</ambient>
+            <diffuse>0.95 0.85 0.10 1</diffuse>
+          </material>
+        </visual>
+        <visual name="border_e">
+          <pose>60 0 0 0 0 0</pose>
+          <geometry>
+            <box><size>0.15 140 0.01</size></box>
+          </geometry>
+          <material>
+            <ambient>0.80 0.70 0.05 1</ambient>
+            <diffuse>0.95 0.85 0.10 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Spherical coordinates origin (GPS/NavSat için; Ankara yakınları sentetik) -->
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <world_frame_orientation>ENU</world_frame_orientation>
+      <latitude_deg>39.925533</latitude_deg>
+      <longitude_deg>32.866287</longitude_deg>
+      <elevation>890.0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+
+  </world>
+</sdf>

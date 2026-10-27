@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <model name="target_red_square_2x2">
+    <static>true</static>
+    <pose>0 0 0 0 0 0</pose>
+
+    <!-- 2.0 m x 2.0 m kırmızı kare hedef, zemin üzerinde 5 cm kalınlık -->
+    <link name="target">
+      <pose>0 0 0.025 0 0 0</pose>
+      <inertial>
+        <mass>10.0</mass>
+        <inertia>
+          <ixx>3.335</ixx>
+          <iyy>3.335</iyy>
+          <izz>6.667</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+      <visual name="target_visual">
+        <geometry>
+          <box>
+            <size>2.0 2.0 0.05</size>
+          </box>
+        </geometry>
+        <material>
+          <!-- TEKNOFEST kırmızı (yüksek albedo, kamera tanıma için doygun) -->
+          <ambient>0.70 0.02 0.02 1</ambient>
+          <diffuse>0.95 0.05 0.05 1</diffuse>
+          <specular>0.30 0.15 0.15 1</specular>
+          <emissive>0.08 0.00 0.00 1</emissive>
+        </material>
+      </visual>
+      <collision name="target_collision">
+        <geometry>
+          <box>
+            <size>2.0 2.0 0.05</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>
